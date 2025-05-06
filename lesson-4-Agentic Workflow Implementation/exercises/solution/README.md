@@ -1,3 +1,1 @@
-# Purpose of this Folder
-
-This folder should contain the solution to the exercise. This would be added to a concept walking through the solution with the student for this exercise.
+When you run this, the FactCheckerAgent will flag "uncertain" and "debated" as suspicious terms and print a warning during the fact-checking step. This helps students see how agents can be extended to include domain-specific rules or checks.

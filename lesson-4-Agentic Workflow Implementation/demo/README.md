@@ -1,3 +1,1 @@
-# Purpose of This Directory
-
-This directory should contain any files and instructions necessary for demos created for this lesson.
+This code demonstrates a simple agentic workflow, where individual agents perform specialized tasks in a sequential pipeline to process information. The workflow begins with a ResearchAgent that simulates gathering information on a given query. The output is passed to a FactCheckerAgent, which validates the content and returns a structured response. Finally, a SummarizerAgent condenses the validated information into a brief summary. Each agent is modular and encapsulates a specific responsibility, showcasing how agents can collaborate in a larger system by transforming and passing data from one to the next. This pattern mirrors real-world AI workflows, where systems are composed of interoperable components handling tasks such as data retrieval, validation, and summarization.

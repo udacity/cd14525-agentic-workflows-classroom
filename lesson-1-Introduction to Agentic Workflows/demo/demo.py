@@ -1,81 +1,83 @@
+"""
+Python Demo: Functions vs OpenAI Agents
+This demo shows the parallels between traditional Python functions and OpenAI-powered agents.
+Both follow similar patterns: they take inputs, process them, and return outputs.
+"""
+
+from openai import OpenAI
 import os
-import time
-from typing import Any, List, Dict
+from dotenv import load_dotenv
 
-class Agent:
-    """Simple agent that can perform a specific task"""
+# Load environment variables from .env file
+load_dotenv()
+
+# Define the parameters for the agent
+openai_api_key = os.getenv("OPENAI_API_KEY")
+print(openai_api_key)
+
+# Initialize the OpenAI client if key is available
+client = OpenAI(api_key=openai_api_key) if openai_api_key else None
+
+def traditional_generate_response(query):
+    """
+    A traditional function that returns predefined responses based on keywords.
+    """
+    query_lower = query.lower()
+    if "weather" in query_lower:
+        return "The weather today is sunny with a high of 75°F."
+    elif "time" in query_lower:
+        return "The current time is 12:00 PM."
+    elif "hello" in query_lower or "hi" in query_lower:
+        return "Hello! How can I help you today?"
+    else:
+        return "I'm not sure how to respond to that query."
+
+def openai_generate_response(query):
+    """
+    Uses the OpenAI API to generate a response to the user's query.
+    """
+    if not client:
+        return "OpenAI client not initialized. Please set your API key."
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": query}
+            ],
+            max_tokens=150
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Error generating response: {str(e)}"
+
+# Sample queries
+queries = [
+    "Hello there!",
+    "What's the weather like?",
+    "Tell me a short joke."
+]
+
+print("=" * 50)
+print("DEMO: TRADITIONAL FUNCTION VS OPENAI AGENT")
+print("=" * 50)
+
+for query in queries:
+    print(f"\nQuery: {query}")
+    print("-" * 30)
     
-    def __init__(self, name: str):
-        self.name = name
+    traditional_response = traditional_generate_response(query)
+    print(f"Traditional Function Response:\n{traditional_response}")
+    print("-" * 30)
     
-    def run(self, input_data: Any) -> Any:
-        """Execute the agent's task"""
-        print(f"Agent '{self.name}' processing: {str(input_data)[:30]}...")
-        # This would be implemented by specific agents
-        return input_data
+    print("OpenAI Agent would process this query similarly:")
+    print("1. Take the query as input")
+    print("2. Process it (send to OpenAI API)")
+    print("3. Return a response")
 
-
-class ResearchAgent(Agent):
-    """Agent that simulates researching a topic"""
+    # Uncomment below to enable OpenAI API call (make sure your key is valid)
+    ai_response = openai_generate_response(query)
+    print(f"OpenAI Agent Response:\n{ai_response}")
     
-    def run(self, query: str) -> str:
-        print(f"🔍 {self.name} researching: '{query}'")
-        time.sleep(0.5)  # Simulate API call
-        return f"Research results for '{query}': Found 3 key points about this topic."
-
-
-class SummarizerAgent(Agent):
-    """Agent that summarizes information"""
-    
-    def run(self, text: str) -> str:
-        print(f"📝 {self.name} summarizing text...")
-        time.sleep(0.5)  # Simulate processing
-        return f"Summary: {text.split(':', 1)[1][:30]}..."
-
-
-class FactCheckerAgent(Agent):
-    """Agent that verifies information"""
-    
-    def run(self, text: str) -> Dict:
-        print(f"✓ {self.name} fact checking...")
-        time.sleep(0.5)  # Simulate verification
-        return {
-            "text": text,
-            "accuracy": "high",
-            "verified_claims": 3
-        }
-
-print("=== AGENTIC WORKFLOW DEMO ===")
-    
-# Create agents
-researcher = ResearchAgent("Research Assistant")
-fact_checker = FactCheckerAgent("Fact Checker")
-summarizer = SummarizerAgent("Summarizer")
-
-print("\n🚀 Starting 'Information Processing' workflow\n")
-
-# Initial input
-query = "Agentic workflows in AI systems"
-
-# Step 1: Research
-research_results = researcher.run(query)
-print(f"  → Output: {str(research_results)[:50]}...\n")
-
-# Step 2: Fact check
-fact_check_results = fact_checker.run(research_results)
-print(f"  → Output: {str(fact_check_results)[:50]}...\n")
-
-# Step 3: Summarize
-summary = summarizer.run(fact_check_results["text"])
-print(f"  → Output: {str(summary)[:50]}...\n")
-
-print("✅ Workflow 'Information Processing' completed\n")
-
-print("Final result:")
-print(summary)
-
-print("\nKey concepts demonstrated:")
-print("1. Agents as components that perform specific tasks")
-print("2. Workflow connecting agents in sequence")
-print("3. Information flowing through the system")
-print("4. Each agent transforming the data")
+    print("=" * 50)
