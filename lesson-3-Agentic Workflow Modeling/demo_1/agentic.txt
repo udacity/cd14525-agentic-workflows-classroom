@@ -1,0 +1,16 @@
+---
+config:
+  theme: redux
+---
+flowchart TD
+    A(["Start"]) --> n1["Action Planning"]
+    n1 --> n2["Location"] & n3["Market"] & n4["Cost"]
+    n2 --> n5["Evaluation"]
+    n4 --> n5
+    n3 --> n5
+    n5 --> n6["Decision"]
+    n2@{ shape: rounded}
+    n3@{ shape: rounded}
+    n4@{ shape: rounded}
+    n5@{ shape: rect}
+    n6@{ shape: rect}
