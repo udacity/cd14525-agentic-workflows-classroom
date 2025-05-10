@@ -1,23 +1,12 @@
-# Routing Agent Pattern Explanation
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
 
-## Overview
+# Load environment variables and initialize OpenAI client
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-The **Routing Agent Pattern** is a design pattern that leverages an intelligent agent to direct tasks to the most appropriate specialized agent for execution. This pattern is particularly useful when you have a variety of tasks that can be handled by different agents, each with specific knowledge or capabilities. The routing agent analyzes the input task prompt, determines which agent is best suited to handle the task, and delegates the execution to that agent.
-
-In this demo, the routing agent utilizes a large language model (LLM) to determine the correct agent based on the task description. It then forwards the task to the relevant agent, allowing each agent to execute its specific function. This is an example of a flexible, modular system that can handle a range of tasks with minimal manual intervention.
-
-### Key Components:
-1. **Routing Agent**: The central agent responsible for determining which specialized agent should handle the task.
-2. **Specialized Agents**: Agents that handle specific tasks, such as research, writing, or data analysis.
-3. **Task Prompts**: Input prompts that describe the task to be executed. The routing agent uses these prompts to decide which agent to route the task to.
-4. **Execution Flow**: The routing agent routes the task, and the appropriate agent performs the task and returns results.
-
-## Code Walkthrough
-
-### Helper Function: `call_openai`
-
-The `call_openai` function is a simple wrapper that interacts with OpenAI's API to send a system prompt and user prompt, retrieve a response, and return the generated output.
-
+# --- Helper Function for API Calls ---
 def call_openai(system_prompt, user_prompt, model="gpt-3.5-turbo"):
     """Simple wrapper for OpenAI API calls."""
     response = client.chat.completions.create(
@@ -30,10 +19,8 @@ def call_openai(system_prompt, user_prompt, model="gpt-3.5-turbo"):
     )
     return response.choices[0].message.content
 
-## Agents
 
-### 1. Researcher Agent:
-This agent is responsible for gathering structured information on a given topic. It receives a topic, formulates a request to research the topic, and returns the results.
+# --- Agents for Different Tasks ---
 
 def researcher_agent(topic):
     """Research agent gathers information."""
@@ -43,8 +30,6 @@ def researcher_agent(topic):
     user_prompt = f"Research this topic thoroughly: {topic}"
     return call_openai(system_prompt, user_prompt)
 
-### 2. Writer Agent:
-The writer agent takes the research results and creates a well-structured article based on the information gathered. It uses the provided research to write an engaging article with a clear introduction, body, and conclusion.
 
 def writer_agent(topic, research_results):
     """Writer agent creates content based on research."""
@@ -54,8 +39,6 @@ def writer_agent(topic, research_results):
     user_prompt = f"Write an engaging article about {topic} using this research: {research_results}"
     return call_openai(system_prompt, user_prompt)
 
-### 3. Analyzer Agent:
-The analyzer agent processes data to extract insights, trends, and key takeaways. It is used for tasks that require data analysis, such as identifying patterns or performing statistical analysis.
 
 def analyzer_agent(data):
     """Analyzer agent processes data and provides insights."""
@@ -65,9 +48,8 @@ def analyzer_agent(data):
     user_prompt = f"Analyze the following data and provide insights: {data}"
     return call_openai(system_prompt, user_prompt)
 
-##cRouting Agent
-The Routing Agent is responsible for determining which specialized agent should handle a given task. It uses the task prompt to analyze the request and decide whether the task requires research, content creation, or data analysis. The routing decision is made using an LLM, which is provided with the task prompt and asked to choose the most appropriate agent.
 
+# --- Routing Agent with LLM-Based Task Determination ---
 def routing_agent(task_prompt, *args):
     """Routing agent that uses an LLM to determine which agent to use based on the task prompt."""
     
@@ -106,9 +88,8 @@ def routing_agent(task_prompt, *args):
     else:
         raise ValueError(f"Unknown agent decision: {agent_choice}")
 
-## Example Usage
-In the example usage, the routing agent is used to route three different types of tasks: a research task, a writing task, and a data analysis task. The routing agent selects the appropriate agent to handle each task and forwards the task to the correct agent.
 
+# --- Example Usage ---
 if __name__ == "__main__":
     # Example 1: Research Task
     task_prompt = "Research the impact of artificial intelligence on the healthcare industry."
@@ -125,12 +106,3 @@ if __name__ == "__main__":
     data = "AI adoption data in healthcare, including usage statistics, trends, and outcomes."
     analysis_results = routing_agent(task_prompt, data)  # Pass data to routing agent
     print("\nAnalysis Results:\n", analysis_results)
-
-## Benefits of the Routing Agent Pattern
-**Flexibility:** The routing agent can easily be extended to route tasks to additional agents as the system grows.
-
-**Modularity:** Tasks are delegated to specialized agents, each responsible for specific actions, leading to a more maintainable system.
-
-**Scalability:** The system can scale with the addition of more agents or task types without affecting the routing logic.
-
-**Efficiency:** The routing agent minimizes manual intervention by automatically determining which agent is best suited to handle a given task.

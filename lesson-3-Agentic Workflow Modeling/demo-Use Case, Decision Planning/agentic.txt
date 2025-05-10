@@ -3,7 +3,7 @@ config:
   theme: redux
 ---
 flowchart TD
-    A(["Start"]) --> n1["Action Planning"]
+    A(["Input Prompt"]) --> n1["Action Planning"]
     n1 --> n2["Location"] & n3["Market"] & n4["Cost"]
     n2 --> n5["Evaluation"]
     n4 --> n5

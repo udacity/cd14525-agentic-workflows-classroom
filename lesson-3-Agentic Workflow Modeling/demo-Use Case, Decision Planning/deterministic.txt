@@ -3,7 +3,7 @@ config:
   theme: redux
 ---
 flowchart TD
-    A(["Start"]) --> n1["Data Collection"]
+    A(["Input Prompt"]) --> n1["Data Collection"]
     n1 --> n2["Data Validation"]
     n2 --> n3["Risk Scoring"]
     n3 --> n4["Risk Categorization"]

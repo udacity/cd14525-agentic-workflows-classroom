@@ -1,3 +1,7 @@
+# Parallel Evaluation with Centralized Decisioning
+
+This nworkflow diagram represents a "Multi-Factor Decision Planning" pattern, which can be viewed as a variant of the broader Plan–Branch–Evaluate agentic workflow. It emphasizes parallel factor analysis followed by centralized evaluation, and is especially suited for scenarios involving trade-offs and criteria-based decisions.
+
 # Factory Risk Assessment Workflow Demo
 This demo showcases two approaches for evaluating whether a factory should be built:
 

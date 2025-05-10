@@ -1,0 +1,19 @@
+---
+config:
+  theme: redux
+---
+flowchart TD
+    A(["Input Prompt: user sets the main objective goal"]) --> n1["Goal Setting"]
+    n1 --> n2["Defining and Sequencing Tasks"]
+    n3["Evaluation"] -- Goals complete --> n1
+    n3 -- Goals not complete --> n2
+    n4["Task Execution"] --> n3 & n5["Tools"]
+    n2 --> n4
+    n5 --> n4
+    n3 --> n5
+    n5 --> n3
+    n1@{ shape: rect}
+    n2@{ shape: rect}
+    n3@{ shape: rect}
+    n4@{ shape: rect}
+    n5@{ shape: rect}
