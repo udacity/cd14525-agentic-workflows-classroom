@@ -1,0 +1,16 @@
+graph TD
+    A[Start] --> B[Monitor Equipment via Sensors]
+    B --> C{Is Equipment Functioning Normally?}
+    C -->|No| D[Identify Issue]
+    D --> E[Notify Maintenance Team]
+    E --> F[Assess Severity]
+    F --> G[Create Work Order]
+    G --> H[Assign Technicians]
+    H --> I[Perform Maintenance/Repair]
+    I --> J[Test Equipment]
+    J --> K{Is Equipment Functioning?}
+    K -->|Yes| L[Close Work Order]
+    K -->|No| M[Re-assess Problem]
+    M --> D
+    L --> N[End]
+    C -->|Yes| N[End]

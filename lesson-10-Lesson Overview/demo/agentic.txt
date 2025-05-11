@@ -1,0 +1,18 @@
+graph TD
+    A[Start] --> B[Monitor Equipment via Sensors]
+    B --> C{Is Equipment Functioning?}
+    C -->|No| D[AI Agent: Detect and Analyze Issue]
+    D --> E[AI Agent: Task Decomposition and Dynamic Routing]
+    E --> F{Is Maintenance Required?}
+    F -->|Yes| G[AI Agent: Assign Technicians and Plan Maintenance]
+    F -->|No| H[AI Agent: Reroute or Re-plan Tasks]
+    G --> I[Technician: Perform Maintenance]
+    I --> J[AI Agent: Test Equipment]
+    J --> K{Is Equipment Functioning?}
+    K -->|Yes| L[AI Agent: Close Work Order]
+    K -->|No| M[AI Agent: Re-assess and Generate New Plan]
+    M --> E
+    H --> E
+    L --> N[AI Agent: Monitor Equipment Health]
+    N --> O[End]
+    C -->|Yes| O
