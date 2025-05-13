@@ -1,0 +1,24 @@
+flowchart TD
+    Start[Start] --> Receive[Receive Request]
+    Receive --> Inventory[Check Inventory]
+    Inventory --> HasStock{Stock Available?}
+    HasStock -- No --> Order[Order Supplies and Wait]
+    HasStock -- Yes --> CheckWeather[Check Weather]
+    Order --> CheckWeather
+
+    CheckWeather --> BadWeather{Weather OK?}
+    BadWeather -- No --> Delay[Delay Dispatch]
+    BadWeather -- Yes --> CheckRoads[Check Road Conditions]
+
+    CheckRoads --> RoadClear{Roads Clear?}
+    RoadClear -- No --> AltRoute[Try Alternate Route]
+    RoadClear -- Yes --> Dispatch[Dispatch Team]
+
+    AltRoute --> RouteFound{Route Found?}
+    RouteFound -- No --> Escalate[Escalate to HQ]
+    RouteFound -- Yes --> Dispatch
+
+    Dispatch --> Delivered{Delivered?}
+    Delivered -- Yes --> End[Confirm + Close]
+    Delivered -- No --> Retry[Retry or Escalate]
+    Retry --> End

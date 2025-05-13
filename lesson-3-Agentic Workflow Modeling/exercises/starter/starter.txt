@@ -1,0 +1,14 @@
+flowchart TD
+    Start[Start] --> Manage[Manage Aid Request]
+
+    Manage --> Inventory[Check Inventory]
+    Manage --> 
+
+    Inventory --> 
+
+    Manage --> DispatchDecision{Ready to Dispatch?}
+    DispatchDecision -- Yes --> Dispatch[Dispatch Team]
+    DispatchDecision -- No --> Replan[Replan or Wait]
+
+    Dispatch --> Confirm[Confirm Delivery]
+    Confirm --> End[End]
