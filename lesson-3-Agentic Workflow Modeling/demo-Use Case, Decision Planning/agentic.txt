@@ -4,13 +4,14 @@ config:
 ---
 flowchart TD
     A(["Input Prompt"]) --> n1["Action Planning"]
-    n1 --> n2["Location"] & n3["Market"] & n4["Cost"]
+    n1 --> n2["Location"]
+    n1 --> n3["Market"]
+    n1 --> n4["Cost"]
     n2 --> n5["Evaluation"]
-    n4 --> n5
     n3 --> n5
+    n4 --> n5
     n5 --> n6["Decision"]
-    n2@{ shape: rounded}
-    n3@{ shape: rounded}
-    n4@{ shape: rounded}
-    n5@{ shape: rect}
-    n6@{ shape: rect}
+    n6 --> n1
+    
+    class n2,n3,n4 rounded;
+    class n5,n6 rect;
