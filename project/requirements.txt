@@ -1,0 +1,5 @@
+pyscopg2-binary==2.9.10
+pandas==2.2.3
+requests==2.32.3
+openai==1.78.1
+python-dotenv=1.1.0
