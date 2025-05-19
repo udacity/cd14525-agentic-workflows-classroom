@@ -1,18 +1,18 @@
 ## Introduction
 
-Welcome to the project AI-Powered Agentic Workflow for Project Management! Imagine yourself as a highly sought-after AI Workflow Architect. Startups and tech companies alike are clamoring for your expertise in designing and implementing intelligent agentic systems that don't just automate tasks, but dynamically *manage* them. Your newest client, **InnovateNext Solutions**, a rapidly scaling startup brimming with brilliant ideas but hampered by inconsistent project execution, has a critical challenge they believe only *you* can solve.
+Welcome to the project AI-Powered Agentic Workflow for Project Management! Imagine yourself as a highly sought-after AI Workflow Architect who specializes in implementing intelligent agentic systems that don't just automate tasks, but dynamically *manage* them. Your newest client, **InnovateNext Solutions**, a rapidly scaling startup brimming with brilliant ideas but hampered by inconsistent project execution, has a critical challenge they believe only *you* can solve.
 
-They are seeking a revolutionary way to manage their entire product development lifecycle. Your goal is to step in and engineer a sophisticated, **reusable agentic workflow**. This system should bring order and efficiency to their process, ensuring their *various* product ideas can be *consistently and scalably* transformed into well-defined user stories, product features, and detailed engineering tasks. You will pioneer this system by first applying it to their upcoming "Email Router" project as a pilot.
+They are seeking a revolutionary way to manage their entire product development lifecycle. Your goal is to step in and engineer a sophisticated, **reusable agentic workflow**. This agentic workflow will assist the existing technical project managers (TPMs) on their team by ensuring their *various* product ideas can be *consistently and scalably* transformed into well-defined user stories, product features, and detailed engineering tasks. You will pioneer this system by first applying it to their upcoming "Email Router" project as a pilot.
 
 ## The Challenge: Building a Scalable Engine for Innovation
 
-InnovateNext Solutions is overflowing with innovative concepts but faces a significant bottleneck: turning these ideas into actionable development plans efficiently and consistently. Their current ad-hoc methods lead to miscommunications, varied output quality, and delays across *all* their projects. They need a foundational, AI-driven project management framework that can be applied company-wide.
+TPMs at InnovateNext Solutions are overburdened and face a significant bottleneck: due to their significant workload, turning the multiple product ideas they are handling, into actionable development plans is leading to miscommunications, varied output quality, and delays across *all* their projects. They need a foundational, AI-driven project management framework that can be applied company-wide.
 
-Your **Role** as an AI Workflow Architect is twofold:
+Your role as an AI Workflow Architect is twofold:
 1.  First, you'll construct a robust library of diverse, reusable AI agents – the versatile building blocks for this and future advanced agentic systems. This is about crafting your core, adaptable toolkit.
-2.  Then, you'll deploy a selection of these agents to build the **general-purpose agentic workflow for technical project management**. You will demonstrate its power and flexibility by using their "AI-Powered Email Router" product specification (`Product-Spec-Email-Router.txt`) as the initial input for this pilot implementation.
+2.  Then, you'll deploy a selection of these agents to build the **general-purpose agentic workflow for technical project management**. You will demonstrate its power and flexibility by using their "Email Router" product specification (`Product-Spec-Email-Router.txt`) as the initial input for this pilot implementation.
 
-The **Audience** for your solution are the technical project managers, the leadership team, particularly the Head of Product and Lead Technical Program Manager at InnovateNext. They are looking for a robust system that not only works for the Email Router but also assists the technical project managers at InnovateNext for future product development.
+The **Audience** for your solution are the technical project managers and the leadership team, particularly the Head of Product and Lead Technical Program Manager, at InnovateNext Solutions. They are looking for a robust system that not only works for the Email Router but also assists the technical project managers at InnovateNext for future product development.
 
 ## Your Product: AI-Powered Agentic Workflow for Project Management (Pilot: Email Router)
 
@@ -46,12 +46,11 @@ At the end of the project, you will need to submit the following documents for r
 1. Phase 1:
   - Fully implemented reusable agent library (`workflow_agents/base_agents.py`).
   - Test scripts for each agent in the reusable agent library
-  - Screenshots of correct outputs on running each of the seven scripts
+  - Outputs from running the seven testing scripts in the form of screenshots or text files containing terminal outputs.
 2. Phase 2:
-  - 
+  - Completed Python script (`agentic_workflow.py`) which implements the agentic workflow for technical project management for the email router product specification.
+  - Output from the agentic workflow in the form of screenshots or a text file containing the terminal output.
 
-You'll be drawing upon your understanding of LLMs, agent design patterns (like personas, knowledge augmentation, evaluation loops, and routing), and your Python programming skills to bring this cutting-edge, scalable solution to life.
-
-Ready to show InnovateNext Solutions how AI can revolutionize their entire approach to project management, starting with the Email Router? Let's architect the future of work!
+You'll be drawing upon your LLM prompting skils, your knowledge of agentic workflows, and your Python programming skills to bring this solution to life. Ready to show InnovateNext Solutions how AI can revolutionize their entire approach to project management, starting with the Email Router? Let's architect the future of project management!
 
 ---
