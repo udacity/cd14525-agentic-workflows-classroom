@@ -1,53 +1,18 @@
-# README Template
+# AI-Powered Agentic Workflow for Project Management
 
-Below is a template provided for use when building your README file for students.
-
-# Project Title
-
-Project description goes here.
+In this repo, you will find all the files and instructions required to complete the project. You can find more information about the project inside the Udacity Classroom.
 
 ## Getting Started
 
-Instructions for how to get a copy of the project running on your local machine.
+The project needs to be completed in two phases and you will find starter code for both the phases inside the `starter` folder in this repo. 
 
-### Dependencies
+## Dependencies
 
-```
-Examples here
-```
+A `requirements.txt` file has been provided in this repo if you want to work on the project locally. Otherwise, the workspace provided in the Udacity classroom has been configured with all the required libraries. 
 
-### Installation
-
-Step by step explanation of how to get a dev environment running.
-
-List out the steps
-
-```
-Give an example here
-```
-
-## Testing
-
-Explain the steps needed to run any automated tests
-
-### Break Down Tests
-
-Explain what each test does and why
-
-```
-Examples here
-```
 ## Project Instructions
 
-This section should contain all the student deliverables for this project.
-
-## Built With
-
-* [Item1](www.item1.com) - Description of item
-* [Item2](www.item2.com) - Description of item
-* [Item3](www.item3.com) - Description of item
-
-Include all items used to build project.
+You will find instructions for each of the two phases of the project in the README file inside the folder for that phase.
 
 ## License
 [License](../LICENSE.md)
