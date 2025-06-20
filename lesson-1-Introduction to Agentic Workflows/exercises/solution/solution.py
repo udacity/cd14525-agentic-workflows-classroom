@@ -18,7 +18,9 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 print(openai_api_key)
 
 # Initialize the OpenAI client if key is available
-client = OpenAI(api_key=openai_api_key) if openai_api_key else None
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key=openai_api_key)
 
 def get_hardcoded_answer(question):
     """

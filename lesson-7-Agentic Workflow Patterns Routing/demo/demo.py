@@ -3,106 +3,150 @@ from openai import OpenAI
 from dotenv import load_dotenv
 
 # Load environment variables and initialize OpenAI client
+# Make sure you have a .env file with your OPENAI_API_KEY
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key=os.getenv("OPENAI_API_KEY")
+)
 
 # --- Helper Function for API Calls ---
-def call_openai(system_prompt, user_prompt, model="gpt-3.5-turbo"):
+def call_openai(system_prompt, user_prompt, model="gpt-4o"):
     """Simple wrapper for OpenAI API calls."""
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ],
-        temperature=0
-    )
-    return response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 
-# --- Agents for Different Tasks ---
+# --- Agent Class Implementations ---
 
-def researcher_agent(topic):
-    """Research agent gathers information."""
-    system_prompt = """You are a research agent. Your task is to provide structured research on the given topic.
-    Provide details such as an overview, key points, and any other relevant details."""
+class CodeGenerationAgent:
+    """Agent that generates code based on a natural language description."""
+    def __init__(self):
+        self.description = "Code Generation Agent: Use this agent to generate code in various programming languages based on a textual description of the desired functionality."
+        self.name = "Code Generation Agent"
+
+    def get_description(self):
+        """Returns the agent's description."""
+        return self.description
+
+    def run(self, task_prompt):
+        """Executes the code generation task."""
+        system_prompt = """You are a specialist Code Generation Agent. Your task is to write clean, efficient, and well-documented code based on the user's request.
+        Provide only the code block for the requested language, followed by a brief explanation of how it works."""
+        
+        user_prompt = f"Generate code for the following task: {task_prompt}"
+        return call_openai(system_prompt, user_prompt)
+
+
+class EuropeanHistoryQAAgent:
+    """Agent that answers questions about European history."""
+    def __init__(self):
+        self.description = "European History Q&A Agent: Use this agent to get answers to specific questions about European history, from ancient times to the modern era."
+        self.name = "European History Q&A Agent"
+
+    def get_description(self):
+        """Returns the agent's description."""
+        return self.description
+
+    def run(self, task_prompt):
+        """Executes the history question-answering task."""
+        system_prompt = """You are a specialist European History Agent. Your task is to provide accurate and detailed answers to questions about European history.
+        Cite key dates, figures, and events in your response."""
+        
+        user_prompt = f"Answer the following European history question: {task_prompt}"
+        return call_openai(system_prompt, user_prompt)
+
+
+class MathematicalProblemSolvingAgent:
+    """Agent that solves mathematical problems."""
+    def __init__(self):
+        self.description = "Mathematical Problem Solving Agent: Use this agent to solve mathematical problems, including algebra, calculus, and other quantitative tasks."
+        self.name = "Mathematical Problem Solving Agent"
+
+    def get_description(self):
+        """Returns the agent's description."""
+        return self.description
+
+    def run(self, task_prompt):
+        """Executes the mathematical problem-solving task."""
+        system_prompt = """You are a specialist Mathematical Problem Solving Agent. Your task is to solve the given mathematical problem, showing the steps involved for clarity.
+    Provide the final answer clearly."""
+        
+        user_prompt = f"Solve the following mathematical problem: {task_prompt}"
+        return call_openai(system_prompt, user_prompt)
+
+
+# --- Routing Agent with Dynamic Prompt Generation ---
+def routing_agent(task_prompt, agents):
+    """
+    Routing agent that uses an LLM to determine which agent to use based on the task prompt.
     
-    user_prompt = f"Research this topic thoroughly: {topic}"
-    return call_openai(system_prompt, user_prompt)
-
-
-def writer_agent(topic, research_results):
-    """Writer agent creates content based on research."""
-    system_prompt = """You are a content writer. Your task is to create an article using the provided research.
-    Structure your content with a clear introduction, body, and conclusion."""
+    Args:
+        task_prompt (str): The user's request.
+        agents (list): A list of agent objects to choose from.
+    """
     
-    user_prompt = f"Write an engaging article about {topic} using this research: {research_results}"
-    return call_openai(system_prompt, user_prompt)
-
-
-def analyzer_agent(data):
-    """Analyzer agent processes data and provides insights."""
-    system_prompt = """You are an analyst. Your task is to provide insights from the given data.
-    Focus on identifying trends, anomalies, and key takeaways."""
+    # Dynamically create the list of available agents from their descriptions
+    agent_descriptions = "\n".join([f"- {agent.get_description()}" for agent in agents])
     
-    user_prompt = f"Analyze the following data and provide insights: {data}"
-    return call_openai(system_prompt, user_prompt)
+    system_prompt = f"""You are an expert AI routing assistant. Your job is to analyze a user's task prompt and route it to the most appropriate agent.
+    You have the following agents available:
+    {agent_descriptions}
 
+    Analyze the user's task prompt below and determine which agent is the best fit.
+    Respond only with the exact name of the agent (e.g., 'Code Generation Agent'), and nothing else.
 
-# --- Routing Agent with LLM-Based Task Determination ---
-def routing_agent(task_prompt, *args):
-    """Routing agent that uses an LLM to determine which agent to use based on the task prompt."""
-    
-    # Use LLM to analyze the prompt and determine the correct task type
-    system_prompt = """You are an AI assistant that can route tasks to the right agents. 
-    You will be given a task prompt, and your job is to determine the appropriate agent to handle it.
-    Agents available:
-    - Researcher Agent: Researches a topic and provides structured information.
-    - Writer Agent: Creates articles or content from research.
-    - Analyzer Agent: Analyzes data and provides insights.
-    
-    Task: {task_prompt}
-    
-    Determine the task type and which agent should handle it. Respond only with the agent's name, nothing else."""
+    Task: {task_prompt}"""
     
     user_prompt = f"Given the task: '{task_prompt}', which agent should handle this task?"
     
-    agent_choice = call_openai(system_prompt, user_prompt)
+    # Use an LLM to choose the agent
+    agent_choice_name = call_openai(system_prompt, user_prompt).strip()
     
-    # Route the task to the correct agent based on the choice
-    if "Researcher Agent" in agent_choice:
-        print("Routing task to Researcher Agent...")
-        return researcher_agent(task_prompt)  # Pass topic as argument
-    
-    elif "Writer Agent" in agent_choice:
-        print("Routing task to Writer Agent...")
-        # Assuming research_results is needed, but the research has already been done
-        research_results = args[0]  # Retrieve research results passed from previous step
-        return writer_agent(task_prompt, research_results)
-    
-    elif "Analyzer Agent" in agent_choice:
-        print("Routing task to Analyzer Agent...")
-        data = args[0]  # Assuming data is passed from previous step
-        return analyzer_agent(data)
-    
-    else:
-        raise ValueError(f"Unknown agent decision: {agent_choice}")
+    # Find the chosen agent object and run it
+    for agent in agents:
+        if agent.name == agent_choice_name:
+            print(f"--- Routing task to {agent.name}... ---")
+            return agent.run(task_prompt)
+            
+    return f"Error: Could not find an agent named '{agent_choice_name}'. Please check the routing prompt."
 
 
 # --- Example Usage ---
 if __name__ == "__main__":
-    # Example 1: Research Task
-    task_prompt = "Research the impact of artificial intelligence on the healthcare industry."
-    research_results = routing_agent(task_prompt)  # Pass topic to routing agent
-    print("\nResearch Results:\n", research_results)
+    # 1. Initialize all available agents
+    code_agent = CodeGenerationAgent()
+    history_agent = EuropeanHistoryQAAgent()
+    math_agent = MathematicalProblemSolvingAgent()
+    
+    all_agents = [code_agent, history_agent, math_agent]
 
-    # Example 2: Writing Task
-    task_prompt = "Write an article on the future of AI in healthcare."
-    article_content = routing_agent(task_prompt, research_results)  # Pass research results to routing agent
-    print("\nArticle Content:\n", article_content)
+    # --- Example 1: Code Generation Task ---
+    task1_prompt = "Write a Python function that implements a recursive binary search algorithm."
+    print(f"User Task: \"{task1_prompt}\"")
+    result1 = routing_agent(task1_prompt, all_agents)
+    print("\nAgent Output:\n", result1)
+    print("\n" + "="*50 + "\n")
 
-    # Example 3: Analysis Task
-    task_prompt = "Analyze the trends in AI adoption in healthcare."
-    data = "AI adoption data in healthcare, including usage statistics, trends, and outcomes."
-    analysis_results = routing_agent(task_prompt, data)  # Pass data to routing agent
-    print("\nAnalysis Results:\n", analysis_results)
+    # --- Example 2: European History Task ---
+    task2_prompt = "What were the main causes of the French Revolution?"
+    print(f"User Task: \"{task2_prompt}\"")
+    result2 = routing_agent(task2_prompt, all_agents)
+    print("\nAgent Output:\n", result2)
+    print("\n" + "="*50 + "\n")
+
+    # --- Example 3: Mathematical Task ---
+    task3_prompt = "Calculate the derivative of f(x) = 5x^4 + 3x^2 - 2x + 7."
+    print(f"User Task: \"{task3_prompt}\"")
+    result3 = routing_agent(task3_prompt, all_agents)
+    print("\nAgent Output:\n", result3)

@@ -4,7 +4,9 @@ from openai import OpenAI
 
 # Load environment variables
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key=os.getenv("OPENAI_API_KEY"))
 
 MAX_RETRIES = 5
 

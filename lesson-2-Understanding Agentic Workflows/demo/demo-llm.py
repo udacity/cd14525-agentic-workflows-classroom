@@ -7,7 +7,9 @@ from openai import OpenAI
 
 # Load API key from .env file
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key=os.getenv("OPENAI_API_KEY"))
 
 class Task:
     def __init__(self, name, complexity, priority, deadline="normal"):

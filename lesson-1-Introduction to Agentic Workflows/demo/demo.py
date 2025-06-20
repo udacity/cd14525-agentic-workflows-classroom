@@ -15,7 +15,9 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize the OpenAI client if key is available
-client = OpenAI(api_key=openai_api_key) if openai_api_key else None
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key=openai_api_key)
 
 def traditional_generate_response(query):
     """

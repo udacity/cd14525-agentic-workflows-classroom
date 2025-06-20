@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 
 # Load environment variables and initialize OpenAI client
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key=os.getenv("OPENAI_API_KEY"))
 
-def call_openai(system_prompt, user_prompt, model="gpt-3.5-turbo"):
+def call_openai(system_prompt, user_prompt, temp, model="gpt-3.5-turbo"):
     """Simple wrapper for OpenAI API calls"""
     response = client.chat.completions.create(
         model=model,
@@ -14,7 +16,7 @@ def call_openai(system_prompt, user_prompt, model="gpt-3.5-turbo"):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ],
-        temperature=0
+        temperature=temp
     )
     return response.choices[0].message.content
 
@@ -30,7 +32,7 @@ def researcher_agent(topic):
     user_prompt = f"Research this topic thoroughly: {topic}"
     
     print(f"Researcher agent working on: {topic}")
-    return call_openai(system_prompt, user_prompt)
+    return call_openai(system_prompt, user_prompt, temp = 0.7)
 
 def writer_agent(topic, research_results):
     """Writer agent that creates content based on research"""
@@ -44,7 +46,7 @@ def writer_agent(topic, research_results):
     """
     
     print(f"Writer agent creating content for: {topic}")
-    return call_openai(system_prompt, user_prompt)
+    return call_openai(system_prompt, user_prompt, temp = 0.3)
 
 def run_simple_chain(topic):
     """Run a minimal agent chain: Researcher → Writer"""
@@ -69,5 +71,5 @@ def run_simple_chain(topic):
 
 # Run the example
 if __name__ == "__main__":
-    topic = "What are the latest breackthroughts on implementing AI in big corporations?"
+    topic = "What are the latest breakthroughts in implementing AI in big corporations?"
     results = run_simple_chain(topic)
