@@ -29,149 +29,137 @@ def call_openai(system_prompt, user_prompt, model="gpt-4o"):
 
 # --- Worker Agent Classes ---
 
-class UserProfilerWorker:
+class DietaryProfilerWorker:
     """
-    Analyzes the user's request to extract key trip parameters.
+    Analyzes the user's request to extract key dietary parameters.
     """
     def run(self, user_request):
-        system_prompt = """You are an expert at parsing user travel requests. Analyze the user's prompt and extract the following details: destination, trip_duration (in days), budget_level ('budget', 'mid-range', 'luxury'), and primary_interests (as a list of strings).
-Your response MUST be a valid JSON object with these keys. Do not send anything except for the json output."""
+        system_prompt = """You are an expert at parsing user dietary requests. Analyze the user's prompt and extract the following details: plan_duration (in days), dietary_restrictions (e.g., 'vegetarian', 'vegan', 'gluten-free'), health_goals (e.g., 'weight_loss', 'high_protein'), and known_allergies (as a list of strings).
+Your response MUST be a valid JSON object with these keys. Do not add any markdown formatting like ```json."""
         
         user_prompt = f"User request: '{user_request}'"
         
         try:
             response_text = call_openai(system_prompt, user_prompt)
-            print(response_text)
-            # 1. Remove potential markdown fences if the LLM ignored the instruction.
+            
+            # Sanitize the LLM response to make it valid JSON.
             if response_text.strip().startswith("```json"):
                 response_text = response_text.strip()[7:-3].strip()
-
-            # 2. Replace non-standard whitespace characters (like non-breaking spaces) with standard spaces.
             cleaned_text = response_text.replace(u'\u00A0', ' ')
-            
-            return json.loads(response_text)
+
+            return json.loads(cleaned_text)
         except (json.JSONDecodeError, TypeError) as e:
-            # Fallback for safety
             return {"error": f"Failed to parse user profile. Details: {e}", "raw_response": response_text}
 
-class ActivityFinderWorker:
+class RecipeFinderWorker:
     """
-    Finds activities tailored to the user's interests and budget.
+    Finds recipes tailored to the user's dietary profile.
     """
-    def run(self, destination, interests, budget_level):
-        system_prompt = "You are a travel agent specializing in finding unique activities. Based on the user's interests and budget, suggest 3-5 relevant activities or attractions."
-        user_prompt = f"Find activities in {destination} for someone interested in {', '.join(interests)} with a {budget_level} budget."
+    def run(self, dietary_profile):
+        system_prompt = "You are a nutritionist and chef. Based on the user's dietary profile, suggest a list of suitable recipes for breakfast, lunch, and dinner. Provide a brief description and ingredients for each recipe."
+        user_prompt = f"Find recipes for a {dietary_profile.get('plan_duration')}-day meal plan with the following needs: {json.dumps(dietary_profile)}"
         return call_openai(system_prompt, user_prompt)
 
-class RestaurantFinderWorker:
+class GroceryListGeneratorWorker:
     """
-    Finds dining options tailored to the user's budget.
+    Generates a consolidated grocery list from a list of recipes.
     """
-    def run(self, destination, budget_level):
-        system_prompt = "You are a food critic who recommends restaurants. Suggest a list of dining options (e.g., specific restaurants, types of food stalls) that fit the user's budget."
-        user_prompt = f"Find {budget_level} dining options in {destination}."
+    def run(self, recipes_text):
+        system_prompt = "You are a helpful assistant. Parse the provided list of recipes and create a single, consolidated grocery list. Categorize the items (e.g., Produce, Protein, Pantry) and combine quantities where possible."
+        user_prompt = f"Please generate a grocery list from these recipes:\n\n{recipes_text}"
         return call_openai(system_prompt, user_prompt)
 
-class ItineraryCompilerWorker:
+class MealPlanCompilerWorker:
     """
-    Takes all the gathered information and compiles a day-by-day itinerary.
+    Takes all the gathered information and compiles a day-by-day meal plan.
     """
-    def run(self, trip_profile, activities, restaurants):
-        system_prompt = """You are a meticulous travel planner. Your task is to create a coherent, day-by-day itinerary using the provided list of activities and dining suggestions.
-Structure the output clearly with headings for each day. Make logical suggestions for how to group activities."""
-        user_prompt = f"""Please create a {trip_profile.get('trip_duration')}-day itinerary for a trip to {trip_profile.get('destination')}.
+    def run(self, dietary_profile, recipes, grocery_list):
+        system_prompt = """You are a professional meal planner. Your task is to create a coherent, day-by-day meal plan using the provided recipes.
+After the daily plan, append the consolidated grocery list. Structure the entire output clearly with Markdown headings."""
+        user_prompt = f"""Please create a {dietary_profile.get('plan_duration')}-day meal plan based on the user's profile: {json.dumps(dietary_profile)}.
 
-Use the following suggestions:
---- Activities ---
-{activities}
+--- Suggested Recipes ---
+{recipes}
 
---- Restaurants ---
-{restaurants}
+--- Consolidated Grocery List ---
+{grocery_list}
 """
         return call_openai(system_prompt, user_prompt)
 
 
 # --- Orchestrator Agent Class ---
 
-class TravelOrchestrator:
+class MealPlanOrchestrator:
     """
-    Orchestrator that manages a team of workers to create a personalized travel itinerary.
+    Orchestrator that manages a team of workers to create a personalized meal plan.
     """
     def __init__(self):
-        self.profiler = UserProfilerWorker()
-        self.activity_finder = ActivityFinderWorker()
-        self.restaurant_finder = RestaurantFinderWorker()
-        self.compiler = ItineraryCompilerWorker()
-        print("TravelOrchestrator initialized with its team of workers.")
+        self.profiler = DietaryProfilerWorker()
+        self.recipe_finder = RecipeFinderWorker()
+        self.grocery_generator = GroceryListGeneratorWorker()
+        self.compiler = MealPlanCompilerWorker()
+        print("MealPlanOrchestrator initialized with its team of workers.")
 
     def execute_plan(self, user_request):
         """
-        Executes the dynamic, branching plan to generate an itinerary.
+        Executes the dynamic, branching plan to generate a meal plan.
         """
         print(f"\nOrchestrator: Received new request: '{user_request}'")
         
-        # 1. Initial Analysis - This step determines the entire workflow
-        print("\n--- Step 1: Profiling User Request ---")
-        trip_profile = self.profiler.run(user_request)
-        if "error" in trip_profile:
-            print(f"Orchestrator Error: Could not understand the user request. Aborting. Details: {trip_profile['error']}")
-            return trip_profile
-        print(f"Orchestrator: Profile created successfully: {trip_profile}")
+        # 1. Initial Analysis - This determines the entire workflow
+        print("\n--- Step 1: Profiling User's Dietary Needs ---")
+        dietary_profile = self.profiler.run(user_request)
+        if "error" in dietary_profile:
+            print(f"Orchestrator Error: Could not understand the user request. Aborting. Details: {dietary_profile['error']}")
+            return dietary_profile
+        print(f"Orchestrator: Profile created successfully: {dietary_profile}")
 
-        # 2. Dynamic Worker Delegation (Branching)
-        # In a more complex app, these could be parallel API calls.
-        print("\n--- Step 2: Gathering Recommendations (Dynamic Dispatch) ---")
+        # 2. Dynamic Worker Delegation (Branching and Chaining)
+        print("\n--- Step 2: Generating Recipes and Grocery List ---")
         
-        # Call Activity Finder based on profile
-        print("Orchestrator -> ActivityFinderWorker")
-        activities = self.activity_finder.run(
-            trip_profile['destination'], 
-            trip_profile['primary_interests'], 
-            trip_profile['budget_level']
-        )
-        print("Orchestrator: Got activity suggestions.")
+        # Call Recipe Finder based on profile
+        print("Orchestrator -> RecipeFinderWorker")
+        recipes = self.recipe_finder.run(dietary_profile)
+        print("Orchestrator: Got recipe suggestions.")
 
-        # Call Restaurant Finder based on profile
-        print("Orchestrator -> RestaurantFinderWorker")
-        restaurants = self.restaurant_finder.run(
-            trip_profile['destination'], 
-            trip_profile['budget_level']
-        )
-        print("Orchestrator: Got restaurant suggestions.")
+        # Call Grocery Generator based on the recipes found
+        print("Orchestrator -> GroceryListGeneratorWorker")
+        grocery_list = self.grocery_generator.run(recipes)
+        print("Orchestrator: Generated grocery list.")
 
-        # 3. Synthesis (Final Chaining Step)
-        print("\n--- Step 3: Compiling Final Itinerary ---")
-        print("Orchestrator -> ItineraryCompilerWorker")
-        final_itinerary = self.compiler.run(trip_profile, activities, restaurants)
+        # 3. Synthesis (Final Compilation Step)
+        print("\n--- Step 3: Compiling Final Meal Plan ---")
+        print("Orchestrator -> MealPlanCompilerWorker")
+        final_plan = self.compiler.run(dietary_profile, recipes, grocery_list)
         print("Orchestrator: Plan complete!")
         
-        return final_itinerary
+        return final_plan
 
 
 # --- Example Usage ---
 if __name__ == "__main__":
-    # The high-level goal provided by the user
-    request = "I want to plan a 3-day budget-friendly trip to Berlin. I'm really into history and street art."
+    # Example 1
+    request = "I need a 3-day meal plan. I'm vegetarian and want high-protein meals to support my workouts."
 
     # Instantiate and run the orchestrator
-    orchestrator = TravelOrchestrator()
-    final_plan = orchestrator.execute_plan(request)
+    orchestrator = MealPlanOrchestrator()
+    final_meal_plan = orchestrator.execute_plan(request)
 
     # Print the final result
     print("\n" + "="*50)
-    print("      YOUR PERSONALIZED TRAVEL ITINERARY      ")
+    print("      YOUR PERSONALIZED MEAL PLAN      ")
     print("="*50 + "\n")
-    print(final_plan)
+    print(final_meal_plan)
 
     # --- Second Example for Contrast ---
     print("\n\n" + "#"*60)
     print("### RUNNING A DIFFERENT SCENARIO ###")
     print("#"*60)
 
-    request_2 = "My partner and I want a 2-day luxury getaway to Paris for our anniversary. We love fine dining and classic art museums."
-    final_plan_2 = orchestrator.execute_plan(request_2)
+    request_2 = "Create a 5-day, low-carb meal plan for one person trying to lose weight. I am allergic to shellfish."
+    final_meal_plan_2 = orchestrator.execute_plan(request_2)
 
     print("\n" + "="*50)
-    print("      YOUR PERSONALIZED TRAVEL ITINERARY      ")
+    print("      YOUR PERSONALIZED MEAL PLAN      ")
     print("="*50 + "\n")
-    print(final_plan_2)
+    print(final_meal_plan_2)
