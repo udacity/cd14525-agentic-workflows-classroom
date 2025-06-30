@@ -1,1 +1,0 @@
-When you run this, the FactCheckerAgent will flag "uncertain" and "debated" as suspicious terms and print a warning during the fact-checking step. This helps students see how agents can be extended to include domain-specific rules or checks.
