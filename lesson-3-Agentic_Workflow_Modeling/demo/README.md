@@ -1,0 +1,1 @@
+You can use the `mermaid-to-html.py` file to create HTML files containing your diagrams or you can go to the [mermaid website](mermaid.live) to render your diagrams. 

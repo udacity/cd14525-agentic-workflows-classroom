@@ -1,0 +1,15 @@
+---
+config:
+  theme: redux
+---
+flowchart TD
+    A(["Input Prompt"]) --> n1["Data Collection"]
+    n1 --> n2["Data Validation"]
+    n2 --> n3["Risk Scoring"]
+    n3 --> n4["Risk Categorization"]
+    n4 --> n5["Decision Making"]
+    n1@{ shape: rect}
+    n2@{ shape: rect}
+    n3@{ shape: rect}
+    n4@{ shape: rect}
+    n5@{ shape: rect}

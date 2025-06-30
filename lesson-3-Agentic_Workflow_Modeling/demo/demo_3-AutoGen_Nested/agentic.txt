@@ -1,0 +1,12 @@
+---
+config:
+  theme: redux
+---
+flowchart TD
+    A(["Input Prompt: ConversableAgent initiates task"]) --> n1["User proxy"]
+    n1 -- Proxy initiates task with worker --> n2["Worker"]
+    n3["Critic"] -- Critic responds with suggested changes --> n1
+    n2 -- Message is sent to the critic --> n3
+    n1@{ shape: rect}
+    n2@{ shape: rect}
+    n3@{ shape: rect}

@@ -1,0 +1,36 @@
+flowchart TD
+    A[User Input] --> B[Crew Manager]
+    
+    %% Researcher Agent Section
+    B --> C[Researcher Agent]
+    C --> D[Task: Information Gathering]
+    C --> E[Task: Source Evaluation]
+    C --> F[Task: Data Analysis]
+    
+    %% Researcher Tools
+    D --> D1[Tool: Web Search]
+    D --> D2[Tool: Database Access]
+    E --> E1[Tool: Credibility Checker]
+    F --> F1[Tool: Data Processing]
+    F --> F2[Tool: Knowledge Graph]
+    
+    %% Research Output
+    D1 & D2 & E1 & F1 & F2 --> G[Research Report]
+    G --> B
+    
+    %% Writer Agent Section
+    B --> H[Writer Agent]
+    H --> I[Task: Content Structuring]
+    H --> J[Task: Draft Creation]
+    H --> K[Task: Editing & Refinement]
+    
+    %% Writer Tools
+    I --> I1[Tool: Outline Generator]
+    J --> J1[Tool: Language Model]
+    J --> J2[Tool: Citation Manager]
+    K --> K1[Tool: Grammar Checker]
+    K --> K2[Tool: Readability Analyzer]
+    
+    %% Final Output
+    I1 & J1 & J2 & K1 & K2 --> L[Final Content]
+    L --> B

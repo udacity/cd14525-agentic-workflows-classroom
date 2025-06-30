@@ -1,0 +1,20 @@
+---
+config:
+  theme: redux
+---
+flowchart TD
+    A(["Input Prompt: ConversableAgent initiates task"]) --> UPA["UserProxyAgent"]
+    A --> AA["AssistantAgent"]
+    A --> GCM["GroupChatManager"]
+
+    UPA -->|solicits input / executes code| AA
+    AA -->|generates suggestions / code| UPA
+
+    UPA -->|relays updates / feedback| GCM
+    AA -->|sends progress / task status| GCM
+    GCM -->|coordinates agent communication| UPA
+    GCM -->|coordinates agent communication| AA
+
+    UPA@{ shape: rect }
+    AA@{ shape: rect }
+    GCM@{ shape: rect }

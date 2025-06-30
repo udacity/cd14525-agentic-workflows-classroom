@@ -1,0 +1,12 @@
+---
+config:
+  theme: redux
+---
+flowchart TD
+    A(["Input Prompt: ConversableAgent initiates task"]) --> n1["User proxy"]
+    n1 -- All messages go through the group chat manager --> n2["Chat manager"]
+    n2 --> n3["Worker"] & n4["Critic"]
+    n1@{ shape: rect}
+    n2@{ shape: rect}
+    n3@{ shape: rect}
+    n4@{ shape: rect}
