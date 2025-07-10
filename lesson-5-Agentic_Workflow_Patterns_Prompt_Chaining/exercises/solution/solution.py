@@ -1,6 +1,6 @@
 import os
-from openai import OpenAI
-from dotenv import load_dotenv
+from openai import OpenAI # type: ignore
+from dotenv import load_dotenv # type: ignore
 
 # Load environment variables and initialize OpenAI client
 load_dotenv()
@@ -92,7 +92,11 @@ def run_refinery_chain(feedstock_name):
     print("\nDistillation planning complete.")
 
     # Step 3: Market Analysis
-    product_list = "List all products from the distillation plan above."  # For simplicity
+    # We need to extract the list of products from the distillation plan
+    system_prompt = "List all products from the distillation plan above."
+    product_list = call_openai(system_prompt, distillation_plan)
+
+    # This list of products is then used to perform market analysis
     market_analysis = market_analyst_agent(product_list)
     print("\nMarket analysis complete.")
 
