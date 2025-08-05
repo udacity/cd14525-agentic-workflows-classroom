@@ -1,4 +1,4 @@
-from WorkflowAgents.BaseAgents import RAGKnowledgePromptAgent
+from workflow_agents.base_agents import RAGKnowledgePromptAgent
 import os
 from dotenv import load_dotenv
 
