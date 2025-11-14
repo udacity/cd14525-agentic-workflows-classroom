@@ -1,0 +1,2 @@
+Prompt: One morning I wanted to have scrambled eggs
+Response: ['1. Crack eggs into a bowl', '2. Beat eggs with a fork until mixed', '3. Heat pan with butter or oil over medium heat', '4. Pour egg mixture into pan', '5. Stir gently as eggs cook', '6. Remove from heat when eggs are just set but still moist', '7. Season with salt and pepper', '8. Serve immediately']
