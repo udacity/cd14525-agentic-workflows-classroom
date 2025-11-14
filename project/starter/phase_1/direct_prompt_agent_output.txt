@@ -1,0 +1,3 @@
+The capital of France is Paris.
+
+The agent is using knowledge embedded in the underlying LLM to generate the response.
