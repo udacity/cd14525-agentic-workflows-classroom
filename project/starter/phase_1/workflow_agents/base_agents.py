@@ -64,35 +64,46 @@ class AugmentedPromptAgent:
         # DONE: 4 - Return only the textual content of the response, not the full JSON payload.
         return response.choices[0].message.content.strip()
 
-'''
+
 # KnowledgeAugmentedPromptAgent class definition
 class KnowledgeAugmentedPromptAgent:
     def __init__(self, openai_api_key, persona, knowledge):
         """Initialize the agent with provided attributes."""
         self.persona = persona
-        # TODO: 1 - Create an attribute to store the agent's knowledge.
+        # DONE: 1 - Create an attribute to store the agent's knowledge.
+        self.knowledge = knowledge
         self.openai_api_key = openai_api_key
 
     def respond(self, input_text):
         """Generate a response using the OpenAI API."""
-        client = OpenAI(api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1",
+            api_key=self.openai_api_key
+        )
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                # TODO: 2 - Construct a system message including:
+                # DONE: 2 - Construct a system message including:
                 #           - The persona with the following instruction:
                 #             "You are _persona_ knowledge-based assistant. Forget all previous context."
                 #           - The provided knowledge with this instruction:
                 #             "Use only the following knowledge to answer, do not use your own knowledge: _knowledge_"
                 #           - Final instruction:
                 #             "Answer the prompt based on this knowledge, not your own."
-                
-                # TODO: 3 - Add the user's input prompt here as a user message.
+                {"role": "system", "content": f"""
+You are a knowledge-based assistant with the following persona: {self.persona}. Forget all previous context.
+
+Use only the following knowledge to answer, do not use your own knowledge: {self.knowledge}
+
+Answer the prompt based on this knowledge, not your own.
+                """},
+                # DONE: 3 - Add the user's input prompt here as a user message.
+                {"role": "user", "content": input_text}
             ],
             temperature=0
         )
         return response.choices[0].message.content
-'''
+
 
 # RAGKnowledgePromptAgent class definition
 class RAGKnowledgePromptAgent:
