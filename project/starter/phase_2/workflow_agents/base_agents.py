@@ -399,7 +399,7 @@ class ActionPlanningAgent:
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": f"""
-You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You return the steps as a list. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}"
+You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You MUST return the steps as a list ONLY. Do not include any additional information. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}"
                 """},
                 {"role": "user", "content": prompt}
             ],
