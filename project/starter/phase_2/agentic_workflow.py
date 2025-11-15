@@ -1,7 +1,7 @@
 # agentic_workflow.py
 
 # DONE: 1 - Import the following agents: ActionPlanningAgent, KnowledgeAugmentedPromptAgent, EvaluationAgent, RoutingAgent from the workflow_agents.base_agents module
-from workflow_agents.base_agents import ActionPlanningAgent, KnowledgeAugmentedPromptAgent, EvaluationAgent, RoutingAgent
+from workflow_agents.base_agents import ActionPlanningAgent, KnowledgeAugmentedPromptAgent, EvaluationAgent, RoutingAgent, AugmentedPromptAgent
 
 import os
 from dotenv import load_dotenv
@@ -88,7 +88,7 @@ User Benefit: How this feature creates value for the user"
 """
 program_manager_evaluation_agent = EvaluationAgent(
     openai_api_key=openai_api_key,
-    persona=persona_program_manager,
+    persona=persona_program_manager_eval,
     evaluation_criteria=evaluation_criteria_program_manager_eval,
     worker_agent=program_manager_knowledge_agent,
     max_interactions=10
@@ -221,4 +221,24 @@ Preceding Step Output: {preceding_step_output}
     print(f"=== COMPLETED STEP {step} ===")
 
 print("=== FINAL RESULT ===")
-print(completed_steps[-1])
+
+# Create a summary of steps and ouputs
+output_summary = "\n".join([
+    f"""
+STEP: {step}
+{output}
+    """
+    for step, output in zip(workflow_steps, completed_steps)
+])
+
+# Use an agent to summarise all steps in the action plan
+action_summary_agent = AugmentedPromptAgent(
+    openai_api_key=openai_api_key,
+    persona="""
+You are an expert workflow plan summarising agent.
+
+Given an input of steps in a workflow, create a summary of features, user stories and tasks.
+    """
+)
+summary = action_summary_agent.respond(output_summary)
+print(summary)
