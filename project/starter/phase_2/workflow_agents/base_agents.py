@@ -399,7 +399,15 @@ class ActionPlanningAgent:
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": f"""
-You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You MUST return the steps as a list ONLY. Do not include any additional information. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}"
+You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for.
+You MUST return the steps as a list in the example output ONLY. Do not include any additional information.
+
+Example output:
+- Action 1
+- Action 2
+- Action 3
+
+Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}"
                 """},
                 {"role": "user", "content": prompt}
             ],
@@ -408,6 +416,11 @@ You are an action planning agent. Using your knowledge, you extract from the use
         response_text = response.choices[0].message.content.strip()  # DONE: 4 - Extract the response text from the OpenAI API response
 
         # DONE: 5 - Clean and format the extracted steps by removing empty lines and unwanted text
-        steps = response_text.split("\n")
+        raw_steps = response_text.split("\n")
+        steps = [
+            # Remove dash and whitespace from lines
+            re.sub(r"^\s*-", "", raw_step).strip()
+            for raw_step in raw_steps
+        ]
 
         return steps
