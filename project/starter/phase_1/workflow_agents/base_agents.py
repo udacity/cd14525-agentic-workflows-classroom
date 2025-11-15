@@ -180,7 +180,7 @@ class RAGKnowledgePromptAgent:
 
         while start < len(text):
             end = min(start + self.chunk_size, len(text))
-            if separator in text[start:end]:
+            if end < len(text) and separator in text[start:end]:
                 end = start + text[start:end].rindex(separator) + len(separator)
 
             chunks.append({
@@ -191,8 +191,11 @@ class RAGKnowledgePromptAgent:
                 "end_char": end
             })
 
-            start = end - self.chunk_overlap
-            chunk_id += 1
+            if end < len(text):
+                start = end - self.chunk_overlap
+                chunk_id += 1
+            else:
+                start = end
 
         with open(f"chunks-{self.unique_filename}", 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["text", "chunk_size"])
