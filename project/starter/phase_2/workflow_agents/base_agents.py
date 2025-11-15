@@ -55,7 +55,7 @@ class AugmentedPromptAgent:
             model="gpt-3.5-turbo",
             messages=[
                 # DONE: 3 - Add a system prompt instructing the agent to assume the defined persona and explicitly forget previous context.
-                {"role": "system", "content": f"You are an assistant with the following persona: {self.persona}."},
+                {"role": "system", "content": f"You are an assistant with the following persona: {self.persona}. Forget all previous context."},
                 {"role": "user", "content": input_text}
             ],
             temperature=0
