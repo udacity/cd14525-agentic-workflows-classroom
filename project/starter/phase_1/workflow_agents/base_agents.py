@@ -161,6 +161,10 @@ class RAGKnowledgePromptAgent:
                 "end_char": end
             })
 
+            # break the loop if we have reached the end of the text
+            if end == len(text):
+                break
+
             start = end - self.chunk_overlap
             chunk_id += 1
 
