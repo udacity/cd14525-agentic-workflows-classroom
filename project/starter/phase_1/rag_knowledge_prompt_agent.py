@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Define the parameters for the agent
-openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key = "voc-446254091159874495708569e8ffe718ef35.52178059"
 
 persona = "You are a college professor, yous answer always starts with: Dear students,"
-RAG_knowledge_prompt_agent = RAGKnowledgePromptAgent(openai_api_key, persona, 500, 200)
+RAG_knowledge_prompt_agent = RAGKnowledgePromptAgent(openai_api_key, persona)
 
 knowledge_text = """
 In the historic city of Boston, Clara, a marine biologist and science communicator, began each morning analyzing sonar data to track whale migration patterns along the Atlantic coast.
@@ -46,6 +46,21 @@ chunks = RAG_knowledge_prompt_agent.chunk_text(knowledge_text)
 embbedings = RAG_knowledge_prompt_agent.calculate_embeddings()
 
 prompt = "What is the podcast that Clara hosts about?"
-print(prompt)
-prompt_answer = RAG_knowledge_prompt_agent.find_prompt_in_knowledge(prompt)
-print(prompt_answer)
+
+response = RAG_knowledge_prompt_agent.find_prompt_in_knowledge(prompt)
+
+print(f"Prompt: {prompt}")
+print(f"Response: {response}")
+
+explanation = """The agent leveraged the provided information about Clara’s podcast, “Crosscurrents,” which focuses on the intersection of science, culture, and ethics.
+The system prompt defined the agent’s persona as a college professor, which led to the response beginning with “Dear students,” thereby introducing a more formal and academic tone.
+Overall, the response illustrates the agent’s ability to retrieve and incorporate relevant information from the knowledge base, highlighting the effectiveness of retrieval-augmented generation (RAG) in addressing targeted queries.
+"""
+print(explanation)
+
+with open("/workspace/cd14525-agentic-workflows-classroom/project/starter/phase_1/test_output/action_planning_agent_response.txt", "w") as file:
+    file.write(f"Explanation of the agent's response:\n{explanation}\n")
+    file.write("\n")
+    file.write(f"Prompt: \n{prompt}\n")
+    file.write("\n")
+    file.write(f"Response: \n{response}\n")

@@ -1,23 +1,29 @@
 # Test script for DirectPromptAgent class
-
-from WorkflowAgents.# TODO: 1 - Import the DirectPromptAgent class from BaseAgents
+from workflow_agents.base_agents import DirectPromptAgent
 import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-# TODO: 2 - Load the OpenAI API key from the environment variables
-openai_api_key = 
+openai_api_key = "voc-446254091159874495708569e8ffe718ef35.52178059"
 
 prompt = "What is the Capital of France?"
 
-# TODO: 3 - Instantiate the DirectPromptAgent as direct_agent
-# TODO: 4 - Use direct_agent to send the prompt defined above and store the response
-direct_agent_response = 
+direct_agent = DirectPromptAgent(openai_api_key=openai_api_key)
+
+direct_agent_response = direct_agent.respond(prompt=prompt)
+
 
 # Print the response from the agent
 print(direct_agent_response)
 
-# TODO: 5 - Print an explanatory message describing the knowledge source used by the agent to generate the response
-print()
+explanation = "The agent used its inherent knowledge to answer the prompt, which is based on the training data it was trained on.\nIt did not use any external knowledge sources or specific knowledge provided in the prompt."
+print(explanation)
+
+with open("/workspace/cd14525-agentic-workflows-classroom/project/starter/phase_1/test_output/action_planning_agent_response.txt", "w") as file:
+    file.write(f"Explanation of the agent's response:\n{explanation}\n")
+    file.write("\n")
+    file.write(f"Prompt: \n{prompt}\n")
+    file.write("\n")
+    file.write(f"Response: \n{direct_agent_response}\n")

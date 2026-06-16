@@ -1,6 +1,7 @@
-# TODO: 1 - Import all required libraries, including the ActionPlanningAgent
+from workflow_agents.base_agents import ActionPlanningAgent
+import os
 
-# TODO: 2 - Load environment variables and define the openai_api_key variable with your OpenAI API key
+openai_api_key = "voc-446254091159874495708569e8ffe718ef35.52178059"
 
 knowledge = """
 # Fried Egg
@@ -30,6 +31,19 @@ knowledge = """
 7. Peel and serve
 """
 
-# TODO: 3 - Instantiate the ActionPlanningAgent, passing the openai_api_key and the knowledge variable
+agent = ActionPlanningAgent(openai_api_key=openai_api_key, knowledge=knowledge)
 
-# TODO: 4 - Print the agent's response to the following prompt: "One morning I wanted to have scrambled eggs"
+prompt = "One morning I wanted to have scrambled eggs"
+print(f"Prompt: {prompt}")
+
+response = agent.extract_steps_from_prompt(prompt)
+
+# Print the agent's response
+print("Agent's response to the prompt:")
+print("\n".join(response))
+
+with open("/workspace/cd14525-agentic-workflows-classroom/project/starter/phase_1/test_output/action_planning_agent_response.txt", "w") as file:
+    file.write(f"Prompt: \n{prompt}\n")
+    file.write("\n")
+    file.write(f"Response: \n")
+    file.write("\n".join(response) + "\n")
