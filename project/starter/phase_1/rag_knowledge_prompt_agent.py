@@ -3,10 +3,13 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv()
+# load_dotenv()
+load_dotenv(dotenv_path="../../tests/.env")
 
 # Define the parameters for the agent
+# openai_api_key = os.getenv("OPENAI_API_KEY")
 openai_api_key = os.getenv("OPENAI_API_KEY")
+
 
 persona = "You are a college professor, yous answer always starts with: Dear students,"
 RAG_knowledge_prompt_agent = RAGKnowledgePromptAgent(openai_api_key, persona, 500, 200)

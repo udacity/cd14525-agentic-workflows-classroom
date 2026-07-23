@@ -260,7 +260,10 @@ class EvaluationAgent:
 
             print(" Step 1: Worker agent generates a response to the prompt")
             print(f"Prompt:\n{prompt_to_evaluate}")
-            response_from_worker = self.worker_agent.respond(prompt_to_evaluate) # TODO: 3 - Obtain a response from the worker agent
+            if iterations == 0:
+                response_from_worker = prompt_to_evaluate
+            else:
+                response_from_worker = self.worker_agent.respond(prompt_to_evaluate) # TODO: 3 - Obtain a response from the worker agent
             print(f"Worker Agent Response:\n{response_from_worker}")
 
             print(" Step 2: Evaluator agent judges the response")
@@ -283,7 +286,6 @@ class EvaluationAgent:
                 temperature = 0
             )
             evaluation = response.choices[0].message.content.strip()
-            print(f"Evaluator Agent Evaluation:\n{evaluation}")
             iterations += 1
             print(" Step 3: Check if evaluation is positive")
             verdict_line = next((line for line in evaluation.splitlines() if line.strip().upper().startswith("VERDICT:")), "")
@@ -291,7 +293,9 @@ class EvaluationAgent:
             if "YES" in verdict_line.upper() and missing_fields:
                 evaluation = f"VERDICT: NO\nREASON: Response is missing required labeled fields: {', '.join(missing_fields)}"
                 verdict_line = "VERDICT: NO"
+                print(f"Evaluator Agent Evaluation:\n{evaluation}")
             if "YES" in verdict_line.upper():
+                print(f"Evaluator Agent Evaluation:\n{evaluation}")
                 print("✅ Final solution accepted.")
                 break
             else:
