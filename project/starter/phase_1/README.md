@@ -8,7 +8,7 @@ In this phase, you will develop both the agent library and supporting scripts th
 
 **By the end of this phase, you will have:**
 
-* Implemented seven agent classes in a single `base_agents.py` file, each demonstrating a unique agent workflow.
+* Implemented six agent classes in a single `base_agents.py` file, each demonstrating a unique agent workflow. A seventh, `RAGKnowledgePromptAgent`, is provided for you.
 * Verified each agent’s behavior with a standalone test script.
 * Organized your code into a clean, importable package that can be extended in Phase 2.
 
@@ -22,7 +22,7 @@ You will see files inside the `phase_1` folder arranged as follows:
 phase_1/
 ├── workflow_agents/
 │   ├── __init__.py             ← (empty)
-│   └── base_agents.py          ← Student implementation file
+│   └── base_agents.py          ← Student implementation file (each class is wrapped in ''' — remove the wrapping quotes as you implement it)
 ├── direct_prompt_agent.py
 ├── augmented_prompt_agent.py
 ├── knowledge_augmented_prompt_agent.py
@@ -35,7 +35,7 @@ phase_1/
 * `workflow_agents` is a Python package containing all your agent class definitions.
 * One script per agent to test their functionality has also been provided in the folder.
 
-**Environment Configuration:** Create a `.env` file in the `tests/` folder containing your OpenAI API key:
+**Environment Configuration:** Create a `.env` file in the `phase_1/` folder (alongside the test scripts) containing your OpenAI API key:
 
 ```
 OPENAI_API_KEY=your_openai_api_key
@@ -201,7 +201,7 @@ Complete the following tasks to implement the `EvaluationAgent` class:
 4.  **Construct Evaluation Prompt:** Formulate an evaluation prompt that incorporates the predefined evaluation criteria.
 5.  **Define Evaluation Message Structure:** Define the message structure to evaluate responses using the OpenAI API. Set `temperature=0` for this call.
 6.  **Define Correction Instruction Message Structure:** Define the message structure to generate instructions for correcting responses, also using the OpenAI API with `temperature=0`.
-7.  **Return Results:** Ensure the `respond` method (or equivalent) returns a dictionary containing the final response from the worker agent, the evaluation result, and the count of iterations performed.
+7.  **Return Results:** Ensure the `evaluate()` method returns a dictionary with exactly these keys: `final_response` (the final validated response from the worker agent), `evaluation` (the evaluation result), and `iterations` (the number of iterations performed).
 
 ---
 
@@ -283,7 +283,7 @@ Complete the following tasks to implement the `ActionPlanningAgent` class:
 
 1.  **Initialize Agent Attributes:** In the constructor (`__init__`), initialize attributes for the OpenAI API key and the agent's knowledge.
 2.  **Instantiate OpenAI Client:** Instantiate the OpenAI client object.
-3.  **Implement `respond` method (or similar logic):**
+3.  **Implement the `extract_steps_from_prompt()` method:**
     * Send a request to OpenAI's `gpt-3.5-turbo` model using:
         * A **system prompt** defining the agent as an "Action Planning Agent" that extracts steps using provided knowledge.
         * The **user's input prompt**.

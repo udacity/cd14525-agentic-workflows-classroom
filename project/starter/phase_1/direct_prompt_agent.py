@@ -1,6 +1,6 @@
 # Test script for DirectPromptAgent class
 
-from WorkflowAgents.# TODO: 1 - Import the DirectPromptAgent class from BaseAgents
+# TODO: 1 - Import the DirectPromptAgent class from workflow_agents.base_agents
 import os
 from dotenv import load_dotenv
 
