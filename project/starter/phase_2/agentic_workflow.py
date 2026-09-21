@@ -37,7 +37,10 @@ knowledge_product_manager = (
 
 # Product Manager - Evaluation Agent
 # TODO: 7 - Define the persona and evaluation criteria for a Product Manager evaluation agent and instantiate it as product_manager_evaluation_agent. This agent will evaluate the product_manager_knowledge_agent.
-# The evaluation_criteria should specify the expected structure for user stories (e.g., "As a [type of user], I want [an action or feature] so that [benefit/value].").
+# The evaluation_criteria must be the full string:
+#                      "The answer should be stories that follow the following structure: " \
+#                      "As a [type of user], I want [an action or feature] so that [benefit/value]."
+# Pass product_manager_knowledge_agent as the agent_to_evaluate parameter.
 
 # Program Manager - Knowledge Augmented Prompt Agent
 persona_program_manager = "You are a Program Manager, you are responsible for defining the features for a product."
@@ -54,7 +57,7 @@ persona_program_manager_eval = "You are an evaluation agent that checks the answ
 #                      "Description: A brief explanation of what the feature does and its purpose\n" \
 #                      "Key Functionality: The specific capabilities or actions the feature provides\n" \
 #                      "User Benefit: How this feature creates value for the user"
-# For the 'agent_to_evaluate' parameter, refer to the provided solution code's pattern.
+# Pass program_manager_knowledge_agent as the agent_to_evaluate parameter.
 
 # Development Engineer - Knowledge Augmented Prompt Agent
 persona_dev_engineer = "You are a Development Engineer, you are responsible for defining the development tasks for a product."
@@ -73,7 +76,7 @@ persona_dev_engineer_eval = "You are an evaluation agent that checks the answers
 #                      "Acceptance Criteria: Specific requirements that must be met for completion\n" \
 #                      "Estimated Effort: Time or complexity estimation\n" \
 #                      "Dependencies: Any tasks that must be completed first"
-# For the 'agent_to_evaluate' parameter, refer to the provided solution code's pattern.
+# Pass development_engineer_knowledge_agent as the agent_to_evaluate parameter.
 
 
 # Routing Agent
@@ -92,7 +95,7 @@ persona_dev_engineer_eval = "You are an evaluation agent that checks the answers
 print("\n*** Workflow execution started ***\n")
 # Workflow Prompt
 # ****
-workflow_prompt = "What would the development tasks for this product be?"
+workflow_prompt = "Produce a complete project plan for the Email Router product, including user stories, product features, and engineering tasks."
 # ****
 print(f"Task to complete in this workflow, workflow prompt = {workflow_prompt}")
 
@@ -104,4 +107,17 @@ print("\nDefining workflow steps from the workflow prompt")
 #      a. For each step, use the 'routing_agent' to route the step to the appropriate support function.
 #      b. Append the result to 'completed_steps'.
 #      c. Print information about the step being executed and its result.
-#   4. After the loop, print the final output of the workflow (the last completed step).
+#   4. After the loop, assemble the completed steps into a single consolidated project plan with
+#      clearly labelled sections for user stories, product features, and engineering tasks, and
+#      print that plan. Do not print only the last completed step.
+#
+# TODO: 13 - Implement the assembly step used by TODO 12 step 4.
+#   Group the entries in 'completed_steps' by the role that produced them and print one plan, e.g.:
+#
+#       print("\n*** Consolidated Project Plan ***\n")
+#       for section in ("User Stories", "Product Features", "Engineering Tasks"):
+#           print(f"--- {section} ---")
+#           # print the completed_steps belonging to this section
+#
+#   Keep the routing input separate from this assembly: route on the short step text only, and do
+#   not feed accumulated context back into 'routing_agent.route()'.

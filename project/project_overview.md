@@ -19,7 +19,7 @@ The **Audience** for your solution are the technical project managers and the le
 You will deliver a two-part solution:
 
 **Phase 1: The Agentic Toolkit**
-* A Python package (`workflow_agents`) containing seven meticulously crafted and individually tested agent classes (`base_agents.py`):
+* A Python package (`workflow_agents`) containing seven agent classes (`base_agents.py`). You implement six of them; `RAGKnowledgePromptAgent` is provided for you:
     * `DirectPromptAgent`
     * `AugmentedPromptAgent`
     * `KnowledgeAugmentedPromptAgent`
@@ -50,6 +50,8 @@ At the end of the project, you will need to submit the following documents for r
 2. Phase 2:
   - Completed Python script (`agentic_workflow.py`) which implements the agentic workflow for technical project management for the email router product specification.
   - Output from the agentic workflow in the form of screenshots or a text file containing the terminal output.
+
+Your submission zip must contain only the items listed above. Do not include your virtual environment, your `.env` file, `__pycache__` directories, or any datasets — extra items cause the submission to fail with a generic error that does not explain the cause.
 
 You'll be drawing upon your LLM prompting skils, your knowledge of agentic workflows, and your Python programming skills to bring this solution to life. Ready to show InnovateNext Solutions how AI can revolutionize their entire approach to project management, starting with the Email Router? Let's architect the future of project management!
 

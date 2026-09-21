@@ -6,6 +6,10 @@ import csv
 import uuid
 from datetime import datetime
 
+# NOTE: each agent class below is wrapped in ''' ''' so this file imports cleanly
+# before you start. When you begin implementing a class, delete the ''' line above
+# it and the ''' line below it.
+
 '''
 # DirectPromptAgent class definition
 class DirectPromptAgent:
@@ -227,7 +231,7 @@ class RAGKnowledgePromptAgent:
 '''
 class EvaluationAgent:
     
-    def __init__(self, openai_api_key, persona, evaluation_criteria, worker_agent, max_interactions):
+    def __init__(self, openai_api_key, persona, evaluation_criteria, agent_to_evaluate, max_interactions):
         # Initialize the EvaluationAgent with given attributes.
         # TODO: 1 - Declare class attributes here
 
@@ -281,7 +285,7 @@ class EvaluationAgent:
                     f"Make only these corrections, do not alter content validity: {instructions}"
                 )
         return {
-            # TODO: 7 - Return a dictionary containing the final response, evaluation, and number of iterations
+            # TODO: 7 - Return a dictionary with exactly these keys: 'final_response', 'evaluation', 'iterations'
         }   
 '''
 

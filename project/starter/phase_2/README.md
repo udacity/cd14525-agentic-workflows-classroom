@@ -11,7 +11,7 @@ This is not about building a chatbot. You will develop an agentic system that pr
 
 ## Workflow Agents Library
 
-1.  Locate the `workflow_agents` folder. Ensure it contains the `base_agents.py` file with the code for all agent classes. Confirm you have completed testing these classes as required in Phase 1.
+1.  Copy your completed `base_agents.py` from `phase_1/workflow_agents/` into `phase_2/workflow_agents/`. Copy it, do not move it — you still need it to re-run your Phase 1 tests. Confirm you have completed testing these classes as required in Phase 1.
 2.  You will be working in the `agentic_workflow.py` file in the Phase 2 folder to construct the agentic workflow using the agents from the `workflow_agents.base_agents` module.
 
 ## Workflow Script Implementation Steps
@@ -81,9 +81,8 @@ Follow the `TODO` comments in the `agentic_workflow.py` starter code. Below are 
 11. **Define Support Functions (TODO 11):**
     Define the support functions that were referenced in the `func` field of your routing agent's routes (e.g., `product_manager_support_function`, `program_manager_support_function`, `development_engineer_support_function`). Each of these functions should:
     * Accept an input query (this will be a step from the action plan).
-    * Call the `respond()` method of the corresponding Knowledge Augmented Prompt Agent (e.g., `product_manager_knowledge_agent.respond(query)`).
-    * Take the response from the Knowledge Agent and pass it to the `evaluate()` method of the corresponding Evaluation Agent (e.g., `product_manager_evaluation_agent.evaluate(response_from_knowledge_agent)`).
-    * Return the final, validated response (typically found in the `'final_response'` key of the dictionary returned by the `evaluate` method).
+    * Call the `evaluate()` method of the corresponding Evaluation Agent, passing the step itself (e.g., `product_manager_evaluation_agent.evaluate(query)`). The Evaluation Agent invokes its own worker agent internally — do not call `respond()` yourself first.
+    * Return the value stored under the `final_response` key of the dictionary returned by `evaluate()`.
 
 12. **Implement Workflow (TODO 12):**
     This is where the agentic workflow comes together:
@@ -94,6 +93,6 @@ Follow the `TODO` comments in the `agentic_workflow.py` starter code. Below are 
         * Use the `routing_agent.route()` method to pass the current step. This will invoke the appropriate support function based on the routes you defined.
         * Append the result returned by the `routing_agent` to your `completed_steps` list.
         * Print the result of the current step.
-    * After processing all steps, print the final output of the workflow, which is usually the last item in the `completed_steps` list.
+    * After processing all steps, assemble and print a single consolidated project plan with clearly labelled sections for user stories, product features, and engineering tasks. Do not print only the last completed step.
 
 This structured approach will guide you in building a functional agentic workflow. Good luck!
