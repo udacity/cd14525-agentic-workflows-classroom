@@ -42,7 +42,7 @@ def parse_tasks(xml: str) -> List[Dict]:
         elif line.startswith("<type>"):
             current_task["type"] = line[6:-7].strip()
         elif line.startswith("<description>"):
-            current_task["description"] = line[12:-13].strip()
+            current_task["description"] = line[13:-14].strip()
         elif line.startswith("</task>"):
             if "description" in current_task:
                 if "type" not in current_task:
@@ -78,7 +78,11 @@ Your Subtask: {task_description}
 </response>
 """
         raw_output = llm_call(prompt)
-        return extract_xml(raw_output, "response")
+        result = extract_xml(raw_output, "response")
+        if not result:
+            print(f"[WARNING] No <response> tag found. Using raw output:\n{raw_output}")
+            result = raw_output
+        return result
 
 class RenalFunctionAgent(WorkerAgent):
     """Worker that analyzes kidney function markers."""
@@ -96,7 +100,11 @@ Your Subtask: {task_description}
 </response>
 """
         raw_output = llm_call(prompt)
-        return extract_xml(raw_output, "response")
+        result = extract_xml(raw_output, "response")
+        if not result:
+            print(f"[WARNING] No <response> tag found. Using raw output:\n{raw_output}")
+            result = raw_output
+        return result
 
 class LiverFunctionAgent(WorkerAgent):
     """Worker that analyzes liver enzyme markers."""
@@ -114,7 +122,11 @@ Your Subtask: {task_description}
 </response>
 """
         raw_output = llm_call(prompt)
-        return extract_xml(raw_output, "response")
+        result = extract_xml(raw_output, "response")
+        if not result:
+            print(f"[WARNING] No <response> tag found. Using raw output:\n{raw_output}")
+            result = raw_output
+        return result
 
 # === Orchestrator ===
 
