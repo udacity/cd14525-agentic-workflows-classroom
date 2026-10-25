@@ -61,7 +61,7 @@ Complete the following tasks to implement your `DirectPromptAgent` class:
 
 1.  **Import the `OpenAI` Class:** Import the `OpenAI` class from the OpenAI Python library.
 2.  **Store the API Key:** Within the class constructor (`__init__`), create an attribute named `openai_api_key` to store the provided OpenAI API key.
-3.  **Select the LLM Model:** When calling the OpenAI API, select the `gpt-3.5-turbo` model for generating completions.
+3.  **Select the LLM Model:** When calling the OpenAI API, select the `gpt-4.1-mini` model for generating completions.
 4.  **Send the User Prompt:** Pass the user-provided prompt directly to the model as a user message. Do not include a system prompt.
 5.  **Implement the `respond` method:** Return only the content (text) of the LLM's response, not the full JSON payload.
 
@@ -284,7 +284,7 @@ Complete the following tasks to implement the `ActionPlanningAgent` class:
 1.  **Initialize Agent Attributes:** In the constructor (`__init__`), initialize attributes for the OpenAI API key and the agent's knowledge.
 2.  **Instantiate OpenAI Client:** Instantiate the OpenAI client object.
 3.  **Implement the `extract_steps_from_prompt()` method:**
-    * Send a request to OpenAI's `gpt-3.5-turbo` model using:
+    * Send a request to OpenAI's `gpt-4.1-mini` model using:
         * A **system prompt** defining the agent as an "Action Planning Agent" that extracts steps using provided knowledge.
         * The **user's input prompt**.
     * Extract and store the text response from the OpenAI API.

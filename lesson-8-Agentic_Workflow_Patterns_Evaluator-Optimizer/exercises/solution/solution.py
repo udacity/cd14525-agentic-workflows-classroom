@@ -57,7 +57,7 @@ class RecipeCreatorAgent:
             print("\n🔄 Generating revised recipe based on feedback...")
 
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": user_prompt}
@@ -99,7 +99,7 @@ class NutritionEvaluatorAgent:
         the recipe to meet those requirements while maintaining the integrity of the dish."""
 
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": user_prompt}
@@ -127,7 +127,7 @@ def optimize_recipe(recipe_request):
         print(f"\n📋 Evaluation Result:")
         print(evaluation[:200] + "..." if len(evaluation) > 200 else evaluation)
 
-        if evaluation.lower().startswith("approved"):
+        if "approved: this recipe meets all requirements" in evaluation.lower():
             print("\n✅ All dietary constraints satisfied!")
             break
         else:

@@ -71,7 +71,7 @@ def get_llm_answer(question):
         prompt = f"Please answer this question about program management: {question}"
         
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a program management expert. Provide concise, accurate answers to questions about program management concepts, methodologies, and best practices."},
                 {"role": "user", "content": prompt}

@@ -9,7 +9,7 @@ client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"))
 
 # --- Helper Function for API Calls ---
-def call_openai(system_prompt, user_prompt, model="gpt-3.5-turbo"):
+def call_openai(system_prompt, user_prompt, model="gpt-4.1-mini"):
     """Simple wrapper for OpenAI API calls."""
     response = client.chat.completions.create(
         model=model,

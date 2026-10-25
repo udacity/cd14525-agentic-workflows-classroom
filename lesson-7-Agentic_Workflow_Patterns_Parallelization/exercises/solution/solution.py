@@ -46,7 +46,7 @@ class LegalTermsChecker:
     def run(self, contract_text):
         print("Legal Terms Checker analyzing contract...")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a legal expert specializing in contract law. Analyze the contract for potentially problematic legal terms, clauses, or language that could create legal issues or disputes. Focus on liability, rights, obligations, and ambiguous language."},
                 {"role": "user", "content": f"Analyze this contract for problematic legal terms and clauses:\n\n{contract_text}"}
@@ -61,7 +61,7 @@ class ComplianceValidator:
     def run(self, contract_text):
         print("Compliance Validator analyzing contract...")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a compliance expert specializing in regulatory requirements across industries. Analyze the contract for potential compliance issues related to data privacy, labor laws, industry-specific regulations, and standard business practices."},
                 {"role": "user", "content": f"Analyze this contract for regulatory and industry compliance issues:\n\n{contract_text}"}
@@ -76,7 +76,7 @@ class FinancialRiskAssessor:
     def run(self, contract_text):
         print("Financial Risk Assessor analyzing contract...")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a financial analyst specializing in contract risk assessment. Analyze the contract for financial risks, liability exposure, payment terms issues, and potential financial implications that could negatively impact a business."},
                 {"role": "user", "content": f"Analyze this contract for financial risks and liabilities:\n\n{contract_text}"}
@@ -106,7 +106,7 @@ class SummaryAgent:
         )
         
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a senior contract analyst skilled at synthesizing expert insights into clear, actionable business recommendations."},
                 {"role": "user", "content": combined_prompt}

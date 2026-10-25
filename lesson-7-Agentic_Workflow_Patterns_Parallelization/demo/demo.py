@@ -22,7 +22,7 @@ class PolicyAgent:
     def run(self, prompt):
         print(f"Policy Agent resolving prompt: {prompt}")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a policy expert in global energy policy and climate regulations."},
                 {"role": "user", "content": prompt}
@@ -35,7 +35,7 @@ class TechnologyAgent:
     def run(self, prompt):
         print(f"Technology Agent resolving prompt: {prompt}")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are an expert in renewable energy, smart grids, and energy storage technologies."},
                 {"role": "user", "content": prompt}
@@ -48,7 +48,7 @@ class MarketAgent:
     def run(self, prompt):
         print(f"Market Agent resolving prompt: {prompt}")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are an energy market analyst focused on global investment, pricing, and demand trends."},
                 {"role": "user", "content": prompt}
@@ -70,7 +70,7 @@ class SummaryAgent:
         print(f"Summary Agent resolving prompt: {combined_prompt}")
 
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are an energy strategist skilled at synthesizing expert insights."},
                 {"role": "user", "content": combined_prompt}
