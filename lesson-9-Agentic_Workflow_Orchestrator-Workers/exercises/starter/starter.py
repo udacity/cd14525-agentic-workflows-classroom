@@ -12,7 +12,7 @@ client = OpenAI(
 
 # === Utility Functions ===
 
-def llm_call(prompt: str, model: str = "gpt-4") -> str:
+def llm_call(prompt: str, model: str = "gpt-4.1-mini") -> str:
     """Basic LLM call wrapper."""
     response = client.chat.completions.create(
         model=model,

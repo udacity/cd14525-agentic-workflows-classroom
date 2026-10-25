@@ -93,12 +93,13 @@ class LLMAgent:
         try:
             # Make API call to OpenAI
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4.1-mini",
                 messages=[
                     {"role": "system", "content": "You are a workflow management expert that helps decide the best strategy for handling tasks."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.2,  # Lower temperature for more consistent decision-making
+                response_format={"type": "json_object"},
             )
             
             # Extract the response text

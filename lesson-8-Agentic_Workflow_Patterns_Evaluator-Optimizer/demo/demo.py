@@ -25,7 +25,7 @@ class FinancialReportAgent:
 
         print(f"\n📊 Generating report with prompt:\n{full_prompt}\n")
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": full_prompt}
@@ -45,7 +45,7 @@ class ComplianceAgent:
         eval_prompt = f"Evaluate this investment summary for compliance:\n\n{report_text}\n\nRespond with 'Approved' or provide feedback for revision."
 
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": eval_prompt}

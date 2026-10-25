@@ -74,12 +74,13 @@ def llm_agent(user: FitnessUser) -> Dict:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a certified fitness trainer."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.2,
+            response_format={"type": "json_object"},
         )
         result_text = response.choices[0].message.content
         return json.loads(result_text)
